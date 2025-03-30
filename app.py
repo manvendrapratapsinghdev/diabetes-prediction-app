@@ -1,9 +1,11 @@
 import streamlit as st
 import pandas as pd
 import joblib
+import os
 
 # Load trained model
-model = joblib.load("diabetes_model.pkl")
+model_path = os.path.join(os.path.dirname(__file__), "diabetes_model.pkl")
+model = joblib.load(model_path)
 
 # UI Header
 st.set_page_config(page_title="Diabetes Prediction App", layout="wide")
