@@ -157,7 +157,7 @@ st.markdown(
         }
     </style>
     <div class="footer">
-        Developed with ❤️ by <b>Manvendra Pratap Singh</b>. Connect with me on 
+        Connect with me on 
         <a href="https://www.linkedin.com/in/manvendrapratapsinghdev/" target="_blank">LinkedIn</a>.
     </div>
     """,
