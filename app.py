@@ -130,3 +130,36 @@ if input_df is not None:
                 """,
                 unsafe_allow_html=True
             )
+
+# Add a professional footer
+st.markdown(
+    """
+    <style>
+        .footer {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: #f9f9f9;
+            padding: 10px 20px;
+            text-align: center;
+            font-size: 14px;
+            color: #6c757d;
+            border-top: 1px solid #eaeaea;
+        }
+        .footer a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer a:hover {
+            text-decoration: underline;
+        }
+    </style>
+    <div class="footer">
+        Developed with ❤️ by <b>Manvendra Pratap Singh</b>. Connect with me on 
+        <a href="https://www.linkedin.com/in/manvendrapratapsinghdev/" target="_blank">LinkedIn</a>.
+    </div>
+    """,
+    unsafe_allow_html=True
+)
