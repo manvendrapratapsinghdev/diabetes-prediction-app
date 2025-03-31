@@ -33,20 +33,21 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Add a dropdown for language selection next to the main heading
+language_options = "".join([f'<option value="{lang}" {"selected" if lang == "English" else ""}>{lang}</option>' for lang in available_languages])
+
 st.markdown(
-    """
+    f"""
     <style>
-        .language-dropdown {
+        .language-dropdown {{
             position: absolute;
-            top: -15px;
+            top: 10px;
             right: 20px;
             z-index: 1000;
-        }
+        }}
     </style>
     <div class="language-dropdown">
         <select id="language-selector" onchange="window.location.reload();" style="padding: 5px 10px; font-size: 16px;">
-            <option value="English" selected>English</option>
-            <option value="Hindi">Hindi</option>
+            {language_options}
         </select>
     </div>
     """,
