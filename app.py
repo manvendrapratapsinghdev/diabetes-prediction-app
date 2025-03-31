@@ -38,12 +38,12 @@ with col2:
     selected_language = st.selectbox("", available_languages, index=available_languages.index("Hindi"))
 current_translations = translations[selected_language]
 
-# Add a section above the page title
+# Replace hardcoded English text with dynamic translations
 st.markdown(
-    """
-    <div style="text-align: center; margin-bottom: 20px; margin-top: -40px;">
-        <h1 style="font-size: 2.5rem; color: #007BFF;">🩺 Diabetes Prediction App</h1>
-        <p style="font-size: 1.2rem; color: #555;">This app predicts the likelihood of diabetes based on your health details.</p>
+    f"""
+    <div style=\"text-align: center; margin-bottom: 20px; margin-top: -40px;\">
+        <h1 style=\"font-size: 2.5rem; color: #007BFF;\">{current_translations['app_title']}</h1>
+        <p style=\"font-size: 1.2rem; color: #555;\">{current_translations['app_description']}</p>
     </div>
     """,
     unsafe_allow_html=True
@@ -121,32 +121,32 @@ input_df = user_input()
 # Predict button
 if input_df is not None:
     st.markdown("---")
-    st.subheader("**Predict Result**")
+    st.subheader(f"**{current_translations['predict_button']}**")
 
-    if st.button("🔍 Predict Diabetes"):
-        with st.spinner("Analyzing your data..."):
+    if st.button(current_translations["predict_button"]):
+        with st.spinner(current_translations["analyzing_data"]):
             prediction = model.predict(input_df)[0]
 
-            # Determine BMI category
+            # Update BMI category text
             bmi_value = round(input_df["BMI"].iloc[0], 2)
             if bmi_value < 18.5:
-                bmi_category = "Underweight"
+                bmi_category = current_translations["underweight"]
                 bmi_color = "#FFA500"  # Orange
             elif 18.5 <= bmi_value <= 24.9:
-                bmi_category = "Normal"
+                bmi_category = current_translations["normal"]
                 bmi_color = "#008000"  # Darker green for better contrast
             elif 25 <= bmi_value <= 29.9:
-                bmi_category = "Overweight"
+                bmi_category = current_translations["overweight"]
                 bmi_color = "#FFD700"  # Yellow
             else:
-                bmi_category = "Obese"
+                bmi_category = current_translations["obese"]
                 bmi_color = "#FF0000"  # Red
 
             # Display BMI and category below the prediction result
             st.markdown(
                 f"""
                 <div style="text-align: center; margin-top: 20px;">
-                    <p style="font-size: 18px; color: {bmi_color}; font-weight: bold;">Your BMI is {bmi_value}, which falls under the category: {bmi_category}.</p>
+                    <p style="font-size: 18px; color: {bmi_color}; font-weight: bold;">{current_translations['bmi_message'].format(bmi_value=bmi_value, bmi_category=bmi_category)}</p>
                 </div>
                 """,
                 unsafe_allow_html=True
@@ -154,36 +154,31 @@ if input_df is not None:
 
             if prediction == 1:  # Diabetic
                 st.markdown(
-                    """
-                    <div style="text-align: center; padding: 20px; background-color: #3d1e1e; border-radius: 10px;">
-                        <img src="https://img.icons8.com/ios-filled/100/fa314a/error.png" width="50" style="margin-bottom: 10px;">
-                        <h2 style="color: #ff4d4d; text-shadow: 1px 1px 2px #000000;"><b>Diabetic</b></h2>
-                        <p style="font-size: 18px; color: #f8d4d4; text-shadow: 1px 1px 2px #000000;">Based on the information provided, the model predicts that you are at risk of diabetes.</p>
-                        <p style="font-size: 16px; color: #d5a8a8; text-shadow: 1px 1px 2px #000000;">Please consult a healthcare professional for further advice and diagnosis.</p>
+                    f"""
+                    <div style=\"text-align: center; padding: 20px; background-color: #ffe6e6; border-radius: 10px;\">
+                        <h2 style=\"color: red;\"><b>{current_translations['diabetic']}</b></h2>
+                        <p style=\"color: red;\">{current_translations['diabetic_message']}</p>
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
             else:  # Non-Diabetic
                 st.markdown(
-                    """
-                    <div style="text-align: center; padding: 20px; background-color: #1e3d1e; border-radius: 10px;">
-                        <img src="https://img.icons8.com/ios-filled/100/00ff00/checked.png" width="50" style="margin-bottom: 10px;">
-                        <h2 style="color: #00ff00; text-shadow: 1px 1px 2px #000000;"><b>Non-Diabetic</b></h2>
-                        <p style="font-size: 18px; color: #d4f8d4; text-shadow: 1px 1px 2px #000000;">Based on the information provided, the model predicts that you are not at risk of diabetes.</p>
-                        <p style="font-size: 16px; color: #a8d5a8; text-shadow: 1px 1px 2px #000000;">Maintain a healthy lifestyle and consult a healthcare professional for regular checkups.</p>
+                    f"""
+                    <div style=\"text-align: center; padding: 20px; background-color: #e6ffe6; border-radius: 10px;\">
+                        <h2 style=\"color: green;\"><b>{current_translations['non_diabetic']}</b></h2>
+                        <p style=\"color: green;\">{current_translations['non_diabetic_message']}</p>
                     </div>
                     """,
                     unsafe_allow_html=True
                 )
-            
+
             # Add disclaimer about model limitations
             st.markdown(
-                """
+                f"""
                 <div style="text-align: center; margin-top: 20px; padding: 10px; background-color: #f8f9fa; border-radius: 10px; border: 1px solid #ddd;">
                     <p style="font-size: 14px; color: #6c757d;">
-                        <i>Disclaimer: This prediction is based on a machine learning model trained on a small dataset. 
-                        The results may vary and could be subject to biases or inaccuracies. Please consult a healthcare professional for a comprehensive diagnosis.</i>
+                        <i>{current_translations['disclaimer']}</i>
                     </p>
                 </div>
                 """,
