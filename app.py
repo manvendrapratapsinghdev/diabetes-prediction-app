@@ -28,6 +28,41 @@ st.write("This app predicts the likelihood of diabetes based on your health deta
 
 st.markdown("---")
 
+# Ensure the button dynamically updates the language and reflects the change immediately
+if 'language' not in st.session_state:
+    st.session_state['language'] = 'English'  # Default language
+
+# Dynamically generate the button text in Python
+button_text = f"Switch to {'Hindi' if st.session_state['language'] == 'English' else 'English'}"
+
+# Move the button to the top-right corner using Streamlit's layout capabilities
+st.markdown(
+    f"""
+    <style>
+        .language-switch {{
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            z-index: 1000;
+        }}
+    </style>
+    <div class="language-switch">
+        <button onclick="window.location.reload();" style="background-color: #007BFF; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
+            {button_text}
+        </button>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
+
+# Handle the button click to toggle the language
+if st.button(button_text):
+    st.session_state['language'] = 'Hindi' if st.session_state['language'] == 'English' else 'English'
+    st.rerun()  # Force rerun to reflect the language change immediately
+
+# Maintain a variable for the selected language
+selected_language = st.session_state['language']
+ 
 # Input form
 def user_input():
     # Apply color to BMI Interpretation based on bmi_interpretation from green to red
