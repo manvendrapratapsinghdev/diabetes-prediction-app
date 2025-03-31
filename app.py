@@ -74,50 +74,51 @@ def calculate_bmi(data):
     return data
 
 def user_input():
+    # Replace hardcoded fields with JSON equivalent text based on the selected language
     st.header(current_translations["user_input_header"])
     st.write(current_translations["user_input_description"])
 
     data = {}
 
-    with st.expander("General Information", expanded=True):
-        data["Sex"] = st.selectbox("Gender", ["Male", "Female"], key="sex")
-        data["Age"] = st.number_input("Age (years)", min_value=10, max_value=100, value=30, step=1, key="age")
-        data["Weight"] = st.number_input("Weight (kg)", min_value=30.0, max_value=200.0, value=70.0, step=0.1, key="weight")
+    with st.expander(current_translations["general_info"]):
+        data["Sex"] = st.selectbox(current_translations["gender"], [current_translations["male"], current_translations["female"]], key="sex")
+        data["Age"] = st.number_input(current_translations["age"], min_value=10, max_value=100, value=30, step=1, key="age")
+        data["Weight"] = st.number_input(current_translations["weight"], min_value=30.0, max_value=200.0, value=70.0, step=0.1, key="weight")
 
         # Replace height input with dropdown for height in feet with increments of 0.1
         height_options = [round(x * 0.1, 1) for x in range(30, 76)]  # Generate options from 3.0 to 7.5
-        data["Height"] = st.selectbox("Height (feet)", options=height_options, index=25, key="height_in_feet")
+        data["Height"] = st.selectbox(current_translations["height"], options=height_options, index=25, key="height_in_feet")
 
     # Calculate BMI
     data = calculate_bmi(data)
 
-    with st.expander("Health Conditions", expanded=False):
+    with st.expander(current_translations["health_conditions"]):
         fields = {
-            "HighBP": "High Blood Pressure",
-            "HighChol": "High Cholesterol",
-            "Smoker": "Smoker",
-            "Stroke": "History of Stroke",
-            "HeartDiseaseorAttack": "Heart Disease or Heart Attack",
-            "PhysActivity": "Physically Active",
-            "Fruits": "Consumes Fruits Regularly",
-            "Veggies": "Consumes Vegetables Regularly",
-            "HvyAlcoholConsump": "Heavy Alcohol Consumption",
-            "DiffWalk": "Difficulty Walking",
+            "HighBP": current_translations["high_bp"],
+            "HighChol": current_translations["high_chol"],
+            "Smoker": current_translations["smoker"],
+            "Stroke": current_translations["stroke"],
+            "HeartDiseaseorAttack": current_translations["heart_disease"],
+            "PhysActivity": current_translations["phys_activity"],
+            "Fruits": current_translations["fruits"],
+            "Veggies": current_translations["veggies"],
+            "HvyAlcoholConsump": current_translations["heavy_alcohol"],
+            "DiffWalk": current_translations["difficulty_walking"],
         }
         cols = st.columns(2)  # Split into 2 columns
         for i, (field, label) in enumerate(fields.items()):
             col = cols[i % 2]
-            data[field] = col.radio(label, ["Yes", "No"], index=1, key=field)
+            data[field] = col.radio(label, [current_translations["yes"], current_translations["no"]], index=1, key=field)
 
     # Hardcode "AnyHealthcare" to 1
     data["CholCheck"] = 1
     data["AnyHealthcare"] = 1
     data["NoDocbcCost"] = 0
 
-    with st.expander("Health Ratings", expanded=False):
-        data["GenHlth"] = st.slider("General Health (1=Excellent, 5=Poor)", 1, 5, value=3, key="genhlth")
-        data["MentHlth"] = st.slider("Mental Health Issues (days/month)", 0, 30, value=5, key="menthlth")
-        data["PhysHlth"] = st.slider("Physical Health Issues (days/month)", 0, 30, value=5, key="physhlth")
+    with st.expander(current_translations["health_ratings"]):
+        data["GenHlth"] = st.slider(current_translations["general_health"], 1, 5, value=3, key="genhlth")
+        data["MentHlth"] = st.slider(current_translations["mental_health"], 0, 30, value=5, key="menthlth")
+        data["PhysHlth"] = st.slider(current_translations["physical_health"], 0, 30, value=5, key="physhlth")
 
     # Ensure the order of features matches the trained model
     feature_order = ["HighBP", "HighChol", "CholCheck", "BMI", "Smoker", "Stroke", "HeartDiseaseorAttack", 
