@@ -18,55 +18,48 @@ st.markdown("""
         h1 {font-size: 3rem;}
         h2 {font-size: 2.5rem;}
         h3 {font-size: 2rem;}
-        .section-heading {font-size: 1.75rem; font-weight: bold; margin-top: 20px; margin-bottom: 10px;}
+        .section-heading {font-size: 1.75rem; font-weight: bold; margin-top: 10px; margin-bottom: 10px;}
         .streamlit-expanderHeader {font-size: 1.5rem; font-weight: bold;} /* Custom font size for expander titles */
     </style>
 """, unsafe_allow_html=True)
 
 # Add a dropdown for language selection next to the main heading
-st.markdown(
-    """
-    <style>
-        .language-dropdown {
-            position: absolute;
-            top: -15px;
-            right: 20px;
-            z-index: 1000;
-        }
-    </style>
-    <div class="language-dropdown">
-        <select id="language-selector" onchange="window.location.reload();" style="padding: 5px 10px; font-size: 16px;">
-            <option value="English" selected>English</option>
-            <option value="Hindi">Hindi</option>
-        </select>
-    </div>
-    """,
-    unsafe_allow_html=True
-)
+# st.markdown(
+#     """
+#     <style>
+#         .language-dropdown {
+#             position: absolute;
+#             top: -15px;
+#             right: 20px;
+#             z-index: 1000;
+#         }
+#     </style>
+#     <div class="language-dropdown">
+#         <select id="language-selector" onchange="window.location.reload();" style="padding: 5px 10px; font-size: 16px;">
+#             <option value="English" selected>English</option>
+#             <option value="Hindi">Hindi</option>
+#         </select>
+#     </div>
+#     """,
+#     unsafe_allow_html=True
+# )
 
 # Add a section above the page title
 st.markdown(
     """
-    <div style="text-align: center; margin-bottom: 20px;">
-        <h1 style="font-size: 2.5rem; color: #007BFF;">Welcome to the Diabetes Prediction App</h1>
-        <p style="font-size: 1.2rem; color: #555;">Your health companion for predicting diabetes risk</p>
+    <div style="text-align: center; margin-bottom: 20px; margin-top: -40px;">
+        <h1 style="font-size: 2.5rem; color: #007BFF;">🩺 Diabetes Prediction App</h1>
+        <p style="font-size: 1.2rem; color: #555;">This app predicts the likelihood of diabetes based on your health details.</p>
     </div>
     """,
     unsafe_allow_html=True
 )
 
-# st.title("🩺 Diabetes Prediction App")
-# st.write("This app predicts the likelihood of diabetes based on your health details. Please fill in the information below.")
-
-
-
-
 st.markdown("---")
 # Input form
 def user_input():
-    # Apply color to BMI Interpretation based on bmi_interpretation from green to red
-    st.header("**User Input Features**")
-    st.write("Please provide the following information:")
+    st.header("**Your health details**")
+    st.write("Please update the following information:")
 
     # Organize inputs into collapsible sections
     data = {}
@@ -165,7 +158,7 @@ input_df = user_input()
 # Predict button
 if input_df is not None:
     st.markdown("---")
-    st.subheader("**Prediction Results**")
+    st.subheader("**Predict Result**")
     
     # Use plain text for the button label
     if st.button("🔍 Predict Diabetes"):
