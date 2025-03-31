@@ -3,6 +3,7 @@ import pandas as pd
 import joblib
 import os
 import json
+import threading
 
 # Load trained model
 model_path = os.path.join(os.path.dirname(__file__), "diabetes_model.pkl")
@@ -67,11 +68,15 @@ st.markdown(
 
 st.markdown("---")
 # Input form
-def user_input():
-    st.header("**Your health details**")
-    st.write("Please update the following information:")
+def calculate_bmi(data):
+    height_in_meters = data["Height"] * 0.3048  # Convert height from feet to meters
+    data["BMI"] = data["Weight"] / (height_in_meters ** 2)
+    return data
 
-    # Organize inputs into collapsible sections
+def user_input():
+    st.header(current_translations["user_input_header"])
+    st.write(current_translations["user_input_description"])
+
     data = {}
 
     with st.expander("General Information", expanded=True):
@@ -81,45 +86,10 @@ def user_input():
 
         # Replace height input with dropdown for height in feet with increments of 0.1
         height_options = [round(x * 0.1, 1) for x in range(30, 76)]  # Generate options from 3.0 to 7.5
-        height_in_feet = st.selectbox("Height (feet)", options=height_options, index=25, key="height_in_feet")
+        data["Height"] = st.selectbox("Height (feet)", options=height_options, index=25, key="height_in_feet")
 
-        # Convert height in feet to meters and calculate BMI
-        height_in_meters = height_in_feet * 0.3048  # Convert to meters
-        data["BMI"] = data["Weight"] / (height_in_meters ** 2)
-
-        # Adjust BMI interpretation based on sex
-        bmi_interpretation = ""
-        bmi_color = ""
-        if data["Sex"] == "Male":
-            if data["BMI"] < 20.7:
-                bmi_interpretation = "Underweight"
-                bmi_color = "#FF0000"  # Red
-            elif 20.7 <= data["BMI"] <= 26.4:
-                bmi_interpretation = "Normal weight"
-                bmi_color = "#00FF00"  # Green
-            elif 26.5 <= data["BMI"] <= 27.8:
-                bmi_interpretation = "Slightly overweight"
-                bmi_color = "#FFA500"  # Orange
-            else:
-                bmi_interpretation = "Overweight"
-                bmi_color = "#FF0000"  # Red
-        else:  # Female
-            if data["BMI"] < 19.1:
-                bmi_interpretation = "Underweight"
-                bmi_color = "#FF0000"  # Red
-            elif 19.1 <= data["BMI"] <= 25.8:
-                bmi_interpretation = "Normal weight"
-                bmi_color = "#00FF00"  # Green
-            elif 25.9 <= data["BMI"] <= 27.3:
-                bmi_interpretation = "Slightly overweight"
-                bmi_color = "#FFA500"  # Orange
-            else:
-                bmi_interpretation = "Overweight"
-                bmi_color = "#FF0000"  # Red
-
-        # Display uneditable BMI data and interpretation with color
-        st.text_input("BMI (calculated)", value=round(data["BMI"], 2), disabled=True, key="bmi_display")
-        st.markdown(f'<div style=" margin-top: -30px; margin-left: 5px; color: {bmi_color}; font-weight: bold;">{bmi_interpretation}</div>', unsafe_allow_html=True)
+    # Calculate BMI
+    data = calculate_bmi(data)
 
     with st.expander("Health Conditions", expanded=False):
         fields = {
@@ -159,8 +129,11 @@ def user_input():
     for field in fields.keys():
         data[field] = 1 if data[field] == "Yes" else 0
 
-
     return pd.DataFrame([[data[feature] for feature in feature_order]], columns=feature_order)
+
+# Ensure current_translations is defined based on the selected language
+selected_language = st.session_state.get("language_selector", "English")
+current_translations = translations[selected_language]
 
 # Get user input
 input_df = user_input()
@@ -169,13 +142,36 @@ input_df = user_input()
 if input_df is not None:
     st.markdown("---")
     st.subheader("**Predict Result**")
-    
-    # Use plain text for the button label
+
     if st.button("🔍 Predict Diabetes"):
         with st.spinner("Analyzing your data..."):
             prediction = model.predict(input_df)[0]
-            
-            # Customize the output based on the prediction
+
+            # Determine BMI category
+            bmi_value = round(input_df["BMI"].iloc[0], 2)
+            if bmi_value < 18.5:
+                bmi_category = "Underweight"
+                bmi_color = "#FFA500"  # Orange
+            elif 18.5 <= bmi_value <= 24.9:
+                bmi_category = "Normal"
+                bmi_color = "#008000"  # Darker green for better contrast
+            elif 25 <= bmi_value <= 29.9:
+                bmi_category = "Overweight"
+                bmi_color = "#FFD700"  # Yellow
+            else:
+                bmi_category = "Obese"
+                bmi_color = "#FF0000"  # Red
+
+            # Display BMI and category below the prediction result
+            st.markdown(
+                f"""
+                <div style="text-align: center; margin-top: 20px;">
+                    <p style="font-size: 18px; color: {bmi_color}; font-weight: bold;">Your BMI is {bmi_value}, which falls under the category: {bmi_category}.</p>
+                </div>
+                """,
+                unsafe_allow_html=True
+            )
+
             if prediction == 1:  # Diabetic
                 st.markdown(
                     """
