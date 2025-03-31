@@ -44,7 +44,7 @@ def user_input():
 
         # Replace height input with dropdown for height in feet with increments of 0.1
         height_options = [round(x * 0.1, 1) for x in range(30, 76)]  # Generate options from 3.0 to 7.5
-        height_in_feet = st.selectbox("Height (feet)", options=height_options, index=20, key="height_in_feet")
+        height_in_feet = st.selectbox("Height (feet)", options=height_options, index=25, key="height_in_feet")
 
         # Convert height in feet to meters and calculate BMI
         height_in_meters = height_in_feet * 0.3048  # Convert to meters
@@ -88,7 +88,6 @@ def user_input():
         fields = {
             "HighBP": "High Blood Pressure",
             "HighChol": "High Cholesterol",
-            "CholCheck": "Cholesterol Check in the Last 5 Years",
             "Smoker": "Smoker",
             "Stroke": "History of Stroke",
             "HeartDiseaseorAttack": "Heart Disease or Heart Attack",
@@ -96,13 +95,17 @@ def user_input():
             "Fruits": "Consumes Fruits Regularly",
             "Veggies": "Consumes Vegetables Regularly",
             "HvyAlcoholConsump": "Heavy Alcohol Consumption",
-            "AnyHealthcare": "Has Access to Healthcare",
             "DiffWalk": "Difficulty Walking",
         }
         cols = st.columns(2)  # Split into 2 columns
         for i, (field, label) in enumerate(fields.items()):
             col = cols[i % 2]
             data[field] = col.radio(label, ["Yes", "No"], index=1, key=field)
+
+    # Hardcode "AnyHealthcare" to 1
+    data["CholCheck"] = 1
+    data["AnyHealthcare"] = 1
+    data["NoDocbcCost"] = 0
 
     with st.expander("Health Ratings", expanded=False):
         data["GenHlth"] = st.slider("General Health (1=Excellent, 5=Poor)", 1, 5, value=3, key="genhlth")
@@ -119,8 +122,6 @@ def user_input():
     for field in fields.keys():
         data[field] = 1 if data[field] == "Yes" else 0
 
-    # Hardcode "Could Not See Doctor Due to Cost" to 0
-    data["NoDocbcCost"] = 0
 
     return pd.DataFrame([[data[feature] for feature in feature_order]], columns=feature_order)
 
@@ -141,11 +142,11 @@ if input_df is not None:
             if prediction == 1:  # Diabetic
                 st.markdown(
                     """
-                    <div style="text-align: center; padding: 20px; background-color: #ffcccc; border-radius: 10px;">
+                    <div style="text-align: center; padding: 20px; background-color: #3d1e1e; border-radius: 10px;">
                         <img src="https://img.icons8.com/ios-filled/100/fa314a/error.png" width="50" style="margin-bottom: 10px;">
-                        <h2 style="color: #d9534f;"><b>Diabetic</b></h2>
-                        <p style="font-size: 18px;">Based on the information provided, the model predicts that you are at risk of diabetes.</p>
-                        <p style="font-size: 16px;">Please consult a healthcare professional for further advice and diagnosis.</p>
+                        <h2 style="color: #ff4d4d; text-shadow: 1px 1px 2px #000000;"><b>Diabetic</b></h2>
+                        <p style="font-size: 18px; color: #f8d4d4; text-shadow: 1px 1px 2px #000000;">Based on the information provided, the model predicts that you are at risk of diabetes.</p>
+                        <p style="font-size: 16px; color: #d5a8a8; text-shadow: 1px 1px 2px #000000;">Please consult a healthcare professional for further advice and diagnosis.</p>
                     </div>
                     """,
                     unsafe_allow_html=True
@@ -153,11 +154,11 @@ if input_df is not None:
             else:  # Non-Diabetic
                 st.markdown(
                     """
-                    <div style="text-align: center; padding: 20px; background-color: #d4edda; border-radius: 10px;">
-                        <img src="https://img.icons8.com/ios-filled/100/28a745/checked.png" width="50" style="margin-bottom: 10px;">
-                        <h2 style="color: #28a745;"><b>Non-Diabetic</b></h2>
-                        <p style="font-size: 18px;">Based on the information provided, the model predicts that you are not at risk of diabetes.</p>
-                        <p style="font-size: 16px;">Maintain a healthy lifestyle and consult a healthcare professional for regular checkups.</p>
+                    <div style="text-align: center; padding: 20px; background-color: #1e3d1e; border-radius: 10px;">
+                        <img src="https://img.icons8.com/ios-filled/100/00ff00/checked.png" width="50" style="margin-bottom: 10px;">
+                        <h2 style="color: #00ff00; text-shadow: 1px 1px 2px #000000;"><b>Non-Diabetic</b></h2>
+                        <p style="font-size: 18px; color: #d4f8d4; text-shadow: 1px 1px 2px #000000;">Based on the information provided, the model predicts that you are not at risk of diabetes.</p>
+                        <p style="font-size: 16px; color: #a8d5a8; text-shadow: 1px 1px 2px #000000;">Maintain a healthy lifestyle and consult a healthcare professional for regular checkups.</p>
                     </div>
                     """,
                     unsafe_allow_html=True
