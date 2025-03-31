@@ -23,46 +23,45 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-st.title("🩺 Diabetes Prediction App")
-st.write("This app predicts the likelihood of diabetes based on your health details. Please fill in the information below.")
-
-st.markdown("---")
-
-# Ensure the button dynamically updates the language and reflects the change immediately
-if 'language' not in st.session_state:
-    st.session_state['language'] = 'English'  # Default language
-
-# Dynamically generate the button text in Python
-button_text = f"Switch to {'Hindi' if st.session_state['language'] == 'English' else 'English'}"
-
-# Move the button to the top-right corner using Streamlit's layout capabilities
+# Add a dropdown for language selection next to the main heading
 st.markdown(
-    f"""
+    """
     <style>
-        .language-switch {{
-            position: fixed;
-            top: 10px;
-            right: 10px;
+        .language-dropdown {
+            position: absolute;
+            top: -15px;
+            right: 20px;
             z-index: 1000;
-        }}
+        }
     </style>
-    <div class="language-switch">
-        <button onclick="window.location.reload();" style="background-color: #007BFF; color: white; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer;">
-            {button_text}
-        </button>
+    <div class="language-dropdown">
+        <select id="language-selector" onchange="window.location.reload();" style="padding: 5px 10px; font-size: 16px;">
+            <option value="English" selected>English</option>
+            <option value="Hindi">Hindi</option>
+        </select>
     </div>
     """,
     unsafe_allow_html=True
 )
 
-# Handle the button click to toggle the language
-if st.button(button_text):
-    st.session_state['language'] = 'Hindi' if st.session_state['language'] == 'English' else 'English'
-    st.rerun()  # Force rerun to reflect the language change immediately
+# Add a section above the page title
+st.markdown(
+    """
+    <div style="text-align: center; margin-bottom: 20px;">
+        <h1 style="font-size: 2.5rem; color: #007BFF;">Welcome to the Diabetes Prediction App</h1>
+        <p style="font-size: 1.2rem; color: #555;">Your health companion for predicting diabetes risk</p>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
-# Maintain a variable for the selected language
-selected_language = st.session_state['language']
- 
+# st.title("🩺 Diabetes Prediction App")
+# st.write("This app predicts the likelihood of diabetes based on your health details. Please fill in the information below.")
+
+
+
+
+st.markdown("---")
 # Input form
 def user_input():
     # Apply color to BMI Interpretation based on bmi_interpretation from green to red
