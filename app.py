@@ -15,7 +15,6 @@ with open("translations.json", "r") as file:
 
 # Create an array of available languages
 available_languages = list(translations.keys())
-print("Available languages:", available_languages)
 
 # UI Header
 st.set_page_config(page_title="Diabetes Prediction App", layout="wide")
@@ -33,27 +32,23 @@ st.markdown("""
     </style>
 """, unsafe_allow_html=True)
 
-# Add a dropdown for language selection next to the main heading
-language_options = "".join([f'<option value="{lang}" {"selected" if lang == "English" else ""}>{lang}</option>' for lang in available_languages])
-
+# Adjust the padding of the main block container to remove extra space at the top
 st.markdown(
-    f"""
+    """
     <style>
-        .language-dropdown {{
-            position: absolute;
-            top: 10px;
-            right: 20px;
-            z-index: 1000;
-        }}
+        .stMainBlockContainer {
+            padding-top: 0px !important;
+        }
     </style>
-    <div class="language-dropdown">
-        <select id="language-selector" onchange="window.location.reload();" style="padding: 5px 10px; font-size: 16px;">
-            {language_options}
-        </select>
-    </div>
     """,
     unsafe_allow_html=True
 )
+
+# Use Streamlit's layout options to position the dropdown in the top-right corner
+col1, col2 = st.columns([9, 1])
+with col2:
+    selected_language = st.selectbox("", available_languages, index=available_languages.index("Hindi"))
+current_translations = translations[selected_language]
 
 # Add a section above the page title
 st.markdown(
@@ -131,10 +126,6 @@ def user_input():
         data[field] = 1 if data[field] == "Yes" else 0
 
     return pd.DataFrame([[data[feature] for feature in feature_order]], columns=feature_order)
-
-# Ensure current_translations is defined based on the selected language
-selected_language = st.session_state.get("language_selector", "English")
-current_translations = translations[selected_language]
 
 # Get user input
 input_df = user_input()

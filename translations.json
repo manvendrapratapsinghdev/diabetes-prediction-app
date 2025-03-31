@@ -2,7 +2,7 @@
   "English": {
     "general_info": "General Information",
     "user_input_description": "Please provide the following information:",
-    "user_input_header": "User Input Features",
+    "user_input_header": "Your Input",
     "gender": "Gender",
     "male": "Male",
     "female": "Female",
@@ -30,7 +30,7 @@
   "Hindi": {
     "general_info": "सामान्य जानकारी",
     "user_input_description": "कृपया निम्नलिखित जानकारी प्रदान करें:",
-    "user_input_header": "उपयोगकर्ता इनपुट सुविधाएँ",
+    "user_input_header": "आपकी जानकारी",
     "gender": "लिंग",
     "male": "पुरुष",
     "female": "महिला",
@@ -58,7 +58,7 @@
   "Bengali": {
     "general_info": "সাধারণ তথ্য",
     "user_input_description": "অনুগ্রহ করে নিম্নলিখিত তথ্য প্রদান করুন:",
-    "user_input_header": "ব্যবহারকারীর ইনপুট বৈশিষ্ট্য",
+    "user_input_header": "আপনার ইনপুট",
     "gender": "লিঙ্গ",
     "male": "পুরুষ",
     "female": "মহিলা",
@@ -86,7 +86,7 @@
   "Marathi": {
     "general_info": "सामान्य माहिती",
     "user_input_description": "कृपया खालील माहिती प्रदान करा:",
-    "user_input_header": "वापरकर्ता इनपुट वैशिष्ट्ये",
+    "user_input_header": "तुमची माहिती",
     "gender": "लिंग",
     "male": "पुरुष",
     "female": "महिला",
@@ -114,7 +114,7 @@
   "Telugu": {
     "general_info": "సాధారణ సమాచారం",
     "user_input_description": "దయచేసి క్రింది సమాచారం అందించండి:",
-    "user_input_header": "వినియోగదారు ఇన్‌పుట్ ఫీచర్లు",
+    "user_input_header": "మీ ఇన్‌పుట్",
     "gender": "లింగం",
     "male": "పురుషుడు",
     "female": "స్త్రీ",
@@ -142,7 +142,7 @@
   "Tamil": {
     "general_info": "பொது தகவல்",
     "user_input_description": "தயவுசெய்து பின்வரும் தகவலை வழங்கவும்:",
-    "user_input_header": "பயனர் உள்ளீடு அம்சங்கள்",
+    "user_input_header": "உங்கள் உள்ளீடு",
     "gender": "பாலினம்",
     "male": "ஆண்",
     "female": "பெண்",
@@ -170,7 +170,7 @@
   "Gujarati": {
     "general_info": "સામાન્ય માહિતી",
     "user_input_description": "કૃપા કરીને નીચેની માહિતી પ્રદાન કરો:",
-    "user_input_header": "વપરાશકર્તા ઇનપુટ ફીચર્સ",
+    "user_input_header": "તમારું ઇનપુટ",
     "gender": "લિંગ",
     "male": "પુરુષ",
     "female": "મહિલા",
@@ -198,7 +198,7 @@
   "Punjabi": {
     "general_info": "ਸਧਾਰਨ ਜਾਣਕਾਰੀ",
     "user_input_description": "ਕਿਰਪਾ ਕਰਕੇ ਹੇਠਾਂ ਦਿੱਤੀ ਜਾਣਕਾਰੀ ਪ੍ਰਦਾਨ ਕਰੋ:",
-    "user_input_header": "ਯੂਜ਼ਰ ਇਨਪੁਟ ਫੀਚਰ",
+    "user_input_header": "ਤੁਹਾਡਾ ਇਨਪੁਟ",
     "gender": "ਲਿੰਗ",
     "male": "ਮਰਦ",
     "female": "ਔਰਤ",
