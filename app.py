@@ -24,25 +24,25 @@ st.markdown("""
 """, unsafe_allow_html=True)
 
 # Add a dropdown for language selection next to the main heading
-# st.markdown(
-#     """
-#     <style>
-#         .language-dropdown {
-#             position: absolute;
-#             top: -15px;
-#             right: 20px;
-#             z-index: 1000;
-#         }
-#     </style>
-#     <div class="language-dropdown">
-#         <select id="language-selector" onchange="window.location.reload();" style="padding: 5px 10px; font-size: 16px;">
-#             <option value="English" selected>English</option>
-#             <option value="Hindi">Hindi</option>
-#         </select>
-#     </div>
-#     """,
-#     unsafe_allow_html=True
-# )
+st.markdown(
+    """
+    <style>
+        .language-dropdown {
+            position: absolute;
+            top: -15px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+    <div class="language-dropdown">
+        <select id="language-selector" onchange="window.location.reload();" style="padding: 5px 10px; font-size: 16px;">
+            <option value="English" selected>English</option>
+            <option value="Hindi">Hindi</option>
+        </select>
+    </div>
+    """,
+    unsafe_allow_html=True
+)
 
 # Add a section above the page title
 st.markdown(
