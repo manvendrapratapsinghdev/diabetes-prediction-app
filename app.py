@@ -30,6 +30,7 @@ st.markdown("---")
 
 # Input form
 def user_input():
+    # Apply color to BMI Interpretation based on bmi_interpretation from green to red
     st.header("**User Input Features**")
     st.write("Please provide the following information:")
 
@@ -37,9 +38,51 @@ def user_input():
     data = {}
 
     with st.expander("General Information", expanded=True):
-        data["Age"] = st.number_input("Age (years)", min_value=10, max_value=100, value=30, step=1, key="age")
-        data["BMI"] = st.number_input("Body Mass Index (BMI)", min_value=10.0, max_value=50.0, value=25.0, key="bmi")
         data["Sex"] = st.selectbox("Gender", ["Male", "Female"], key="sex")
+        data["Age"] = st.number_input("Age (years)", min_value=10, max_value=100, value=30, step=1, key="age")
+        data["Weight"] = st.number_input("Weight (kg)", min_value=30.0, max_value=200.0, value=70.0, step=0.1, key="weight")
+
+        # Replace height input with dropdown for height in feet with increments of 0.1
+        height_options = [round(x * 0.1, 1) for x in range(30, 76)]  # Generate options from 3.0 to 7.5
+        height_in_feet = st.selectbox("Height (feet)", options=height_options, index=20, key="height_in_feet")
+
+        # Convert height in feet to meters and calculate BMI
+        height_in_meters = height_in_feet * 0.3048  # Convert to meters
+        data["BMI"] = data["Weight"] / (height_in_meters ** 2)
+
+        # Adjust BMI interpretation based on sex
+        bmi_interpretation = ""
+        bmi_color = ""
+        if data["Sex"] == "Male":
+            if data["BMI"] < 20.7:
+                bmi_interpretation = "Underweight"
+                bmi_color = "#FF0000"  # Red
+            elif 20.7 <= data["BMI"] <= 26.4:
+                bmi_interpretation = "Normal weight"
+                bmi_color = "#00FF00"  # Green
+            elif 26.5 <= data["BMI"] <= 27.8:
+                bmi_interpretation = "Slightly overweight"
+                bmi_color = "#FFA500"  # Orange
+            else:
+                bmi_interpretation = "Overweight"
+                bmi_color = "#FF0000"  # Red
+        else:  # Female
+            if data["BMI"] < 19.1:
+                bmi_interpretation = "Underweight"
+                bmi_color = "#FF0000"  # Red
+            elif 19.1 <= data["BMI"] <= 25.8:
+                bmi_interpretation = "Normal weight"
+                bmi_color = "#00FF00"  # Green
+            elif 25.9 <= data["BMI"] <= 27.3:
+                bmi_interpretation = "Slightly overweight"
+                bmi_color = "#FFA500"  # Orange
+            else:
+                bmi_interpretation = "Overweight"
+                bmi_color = "#FF0000"  # Red
+
+        # Display uneditable BMI data and interpretation with color
+        st.text_input("BMI (calculated)", value=round(data["BMI"], 2), disabled=True, key="bmi_display")
+        st.markdown(f'<div style=" margin-top: -30px; margin-left: 5px; color: {bmi_color}; font-weight: bold;">{bmi_interpretation}</div>', unsafe_allow_html=True)
 
     with st.expander("Health Conditions", expanded=False):
         fields = {
@@ -54,7 +97,6 @@ def user_input():
             "Veggies": "Consumes Vegetables Regularly",
             "HvyAlcoholConsump": "Heavy Alcohol Consumption",
             "AnyHealthcare": "Has Access to Healthcare",
-            "NoDocbcCost": "Could Not See Doctor Due to Cost",
             "DiffWalk": "Difficulty Walking",
         }
         cols = st.columns(2)  # Split into 2 columns
@@ -76,6 +118,9 @@ def user_input():
     data["Sex"] = 1 if data["Sex"] == "Male" else 0
     for field in fields.keys():
         data[field] = 1 if data[field] == "Yes" else 0
+
+    # Hardcode "Could Not See Doctor Due to Cost" to 0
+    data["NoDocbcCost"] = 0
 
     return pd.DataFrame([[data[feature] for feature in feature_order]], columns=feature_order)
 
