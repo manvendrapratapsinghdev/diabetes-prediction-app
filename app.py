@@ -13,8 +13,8 @@ model = joblib.load(model_path)
 with open("translations.json", "r") as file:
     translations = json.load(file)
 
-# Create an array of available languages
-available_languages = list(translations.keys())
+# Ensure Hindi is at the top of the available languages list
+available_languages = ["Hindi"] + [lang for lang in translations.keys() if lang != "Hindi"]
 
 # UI Header
 st.set_page_config(page_title="Diabetes Prediction App", layout="wide")
@@ -31,18 +31,6 @@ st.markdown("""
         .streamlit-expanderHeader {font-size: 1.5rem; font-weight: bold;} /* Custom font size for expander titles */
     </style>
 """, unsafe_allow_html=True)
-
-# Adjust the padding of the main block container to remove extra space at the top
-st.markdown(
-    """
-    <style>
-        .stMainBlockContainer {
-            padding-top: 0px !important;
-        }
-    </style>
-    """,
-    unsafe_allow_html=True
-)
 
 # Use Streamlit's layout options to position the dropdown in the top-right corner
 col1, col2 = st.columns([9, 1])
