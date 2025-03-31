@@ -2,10 +2,19 @@ import streamlit as st
 import pandas as pd
 import joblib
 import os
+import json
 
 # Load trained model
 model_path = os.path.join(os.path.dirname(__file__), "diabetes_model.pkl")
 model = joblib.load(model_path)
+
+# Load translations from the JSON file
+with open("translations.json", "r") as file:
+    translations = json.load(file)
+
+# Create an array of available languages
+available_languages = list(translations.keys())
+print("Available languages:", available_languages)
 
 # UI Header
 st.set_page_config(page_title="Diabetes Prediction App", layout="wide")
